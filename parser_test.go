@@ -49,21 +49,21 @@ func TestParseEvents(t *testing.T) {
 			input: "agenda_finished_unfinished.html",
 			want: []galendario.Event{
 				{
-					Tournament: "Libertadores",
+					Tournament: "Copa Libertadores",
 					Stadium:    "Gigante de Arroyito",
 					DateTime:   time.Date(2024, 05, 7, 19, 0, 0, 0, loc),
 					HomeTeam:   "Rosario Central",
 					AwayTeam:   "Atlético",
 				},
 				{
-					Tournament: "Libertadores",
+					Tournament: "Copa Libertadores",
 					Stadium:    "Campeón del Siglo",
 					DateTime:   time.Date(2024, 05, 14, 19, 0, 0, 0, loc),
 					HomeTeam:   "Peñarol",
 					AwayTeam:   "Atlético",
 				},
 				{
-					Tournament: "Libertadores",
+					Tournament: "Copa Libertadores",
 					Stadium:    "Arena MRV",
 					DateTime:   time.Date(2024, 05, 28, 19, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",

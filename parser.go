@@ -95,12 +95,14 @@ func parseStadium(input string) string {
 }
 
 func parseTournament(input string) string {
-	tournament := strings.TrimSpace(input)
+	tournament := strings.ToLower(strings.TrimSpace(input))
 	switch {
-	case strings.Contains(tournament, "Libertadores"):
-		return "Libertadores"
-	case strings.Contains(tournament, "Brasileiro"):
-		return "Brasileirão"
+	case strings.Contains(tournament, "libertadores"):
+		return "Copa Libertadores"
+	case strings.Contains(tournament, "brasileiro"):
+		return "Campeonato Brasileiro"
+	case strings.Contains(tournament, "do brasil"):
+		return "Copa do Brasil"
 	}
 	return tournament
 }
