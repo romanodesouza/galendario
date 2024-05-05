@@ -5,8 +5,13 @@ on:
     - cron: '0 * * * *'
 
 jobs:
-  test_schedule:
+  fetch_calendar:
     runs-on: ubuntu-latest
     steps:
-      - name: Every hour
-        run: ls
+    - uses: actions/checkout@v4
+
+    - name: Check calendar updates
+      env:
+        GH_BEARER: ${{ secrets.GH_BEARER }}
+        GH_GIST: ${{ secrets.GH_GIST }}
+      run: cron.sh
