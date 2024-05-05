@@ -11,7 +11,7 @@ import (
 	"github.com/romanodesouza/galendario"
 )
 
-func TestParseEvents(t *testing.T) {
+func TestExtractEvents(t *testing.T) {
 	loc, err := time.LoadLocation("America/Sao_Paulo")
 	if err != nil {
 		t.Fatal(err)
@@ -87,7 +87,7 @@ func TestParseEvents(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			events, err := galendario.ParseEvents(f, loc)
+			events, err := galendario.ExtractEvents(f, loc)
 			_ = f.Close()
 
 			if !errors.Is(err, tt.wantErr) {
@@ -95,7 +95,7 @@ func TestParseEvents(t *testing.T) {
 			}
 
 			if diff := cmp.Diff(tt.want, events); diff != "" {
-				t.Errorf("ParseEvents() mismatch (-want +got):\n%s", diff)
+				t.Errorf("ExtractEvents() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}

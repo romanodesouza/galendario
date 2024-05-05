@@ -65,7 +65,7 @@ func main() {
 		defer wg.Done()
 
 		for rc := range chPages {
-			events, err := galendario.ParseEvents(rc, loc)
+			events, err := galendario.ExtractEvents(rc, loc)
 			if err != nil {
 				log.Fatal(err)
 			}
