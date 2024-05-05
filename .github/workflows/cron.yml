@@ -13,6 +13,11 @@ jobs:
         ref: 'main'
         fetch-depth: 0
 
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21.3'
+
     - name: Check calendar updates
       env:
         GH_BEARER: ${{ secrets.GH_BEARER }}
