@@ -1,0 +1,12 @@
+name: Cron
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Every hour
+        run: ls
