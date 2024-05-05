@@ -26,15 +26,15 @@ func TestAddEventsToIcal(t *testing.T) {
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Gigante de Arroyito",
-					DateTime:   time.Date(2024, 05, 7, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(2024, 5, 7, 19, 0, 0, 0, loc),
 					HomeTeam:   "Rosario Central",
 					AwayTeam:   "Atlético",
 				},
 			},
 			want: func() []*ics.VEvent {
 				event := ics.NewEvent("test")
-				event.SetStartAt(time.Date(2024, 05, 7, 19, 0, 0, 0, loc))
-				event.SetEndAt(time.Date(2024, 05, 7, 19, 0, 0, 0, loc).Add(2 * time.Hour))
+				event.SetStartAt(time.Date(2024, 5, 7, 19, 0, 0, 0, loc))
+				event.SetEndAt(time.Date(2024, 5, 7, 19, 0, 0, 0, loc).Add(2 * time.Hour))
 				event.SetSummary("Rosario Central vs Atlético")
 				event.SetLocation("Gigante de Arroyito")
 				event.SetDescription("Copa Libertadores")
@@ -47,29 +47,64 @@ func TestAddEventsToIcal(t *testing.T) {
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Campeón del Siglo",
-					DateTime:   time.Date(2024, 05, 14, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(2024, 5, 14, 19, 0, 0, 0, loc),
 					HomeTeam:   "Peñarol",
 					AwayTeam:   "Atlético",
 				},
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 05, 28, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(2024, 5, 28, 19, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Caracas",
 				},
 			},
 			want: func() []*ics.VEvent {
 				event1 := ics.NewEvent("test")
-				event1.SetStartAt(time.Date(2024, 05, 14, 19, 0, 0, 0, loc))
-				event1.SetEndAt(time.Date(2024, 05, 14, 19, 0, 0, 0, loc).Add(2 * time.Hour))
+				event1.SetStartAt(time.Date(2024, 5, 14, 19, 0, 0, 0, loc))
+				event1.SetEndAt(time.Date(2024, 5, 14, 19, 0, 0, 0, loc).Add(2 * time.Hour))
 				event1.SetSummary("Peñarol vs Atlético")
 				event1.SetLocation("Campeón del Siglo")
 				event1.SetDescription("Copa Libertadores")
 
 				event2 := ics.NewEvent("test")
-				event2.SetStartAt(time.Date(2024, 05, 28, 19, 0, 0, 0, loc))
-				event2.SetEndAt(time.Date(2024, 05, 28, 19, 0, 0, 0, loc).Add(2 * time.Hour))
+				event2.SetStartAt(time.Date(2024, 5, 28, 19, 0, 0, 0, loc))
+				event2.SetEndAt(time.Date(2024, 5, 28, 19, 0, 0, 0, loc).Add(2 * time.Hour))
+				event2.SetSummary("Atlético vs Caracas")
+				event2.SetLocation("Arena MRV")
+				event2.SetDescription("Copa Libertadores")
+
+				return []*ics.VEvent{event1, event2}
+			}(),
+		},
+		{
+			name: "it should serialize events without time as whole-day events",
+			events: []galendario.Event{
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Castelão",
+					DateTime:   time.Date(2024, 10, 5, 0, 0, 0, 0, loc),
+					HomeTeam:   "Fortaleza",
+					AwayTeam:   "Atlético",
+				},
+				{
+					Tournament: "Copa Libertadores",
+					Stadium:    "Arena MRV",
+					DateTime:   time.Date(2024, 5, 28, 19, 0, 0, 0, loc),
+					HomeTeam:   "Atlético",
+					AwayTeam:   "Caracas",
+				},
+			},
+			want: func() []*ics.VEvent {
+				event1 := ics.NewEvent("test")
+				event1.SetAllDayStartAt(time.Date(2024, 10, 5, 0, 0, 0, 0, loc))
+				event1.SetSummary("Fortaleza vs Atlético")
+				event1.SetLocation("Castelão")
+				event1.SetDescription("Campeonato Brasileiro")
+
+				event2 := ics.NewEvent("test")
+				event2.SetStartAt(time.Date(2024, 5, 28, 19, 0, 0, 0, loc))
+				event2.SetEndAt(time.Date(2024, 5, 28, 19, 0, 0, 0, loc).Add(2 * time.Hour))
 				event2.SetSummary("Atlético vs Caracas")
 				event2.SetLocation("Arena MRV")
 				event2.SetDescription("Copa Libertadores")

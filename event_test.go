@@ -30,14 +30,14 @@ func TestExtractEvents(t *testing.T) {
 				{
 					Tournament: "Copa do Brasil",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 04, 30, 21, 30, 0, 0, loc),
+					DateTime:   time.Date(2024, 4, 30, 21, 30, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Sport",
 				},
 				{
 					Tournament: "Copa do Brasil",
 					Stadium:    "Arena Pernambuco",
-					DateTime:   time.Date(2024, 05, 22, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(2024, 5, 22, 19, 0, 0, 0, loc),
 					HomeTeam:   "Sport",
 					AwayTeam:   "Atlético",
 				},
@@ -51,21 +51,21 @@ func TestExtractEvents(t *testing.T) {
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Gigante de Arroyito",
-					DateTime:   time.Date(2024, 05, 7, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(2024, 5, 7, 19, 0, 0, 0, loc),
 					HomeTeam:   "Rosario Central",
 					AwayTeam:   "Atlético",
 				},
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Campeón del Siglo",
-					DateTime:   time.Date(2024, 05, 14, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(2024, 5, 14, 19, 0, 0, 0, loc),
 					HomeTeam:   "Peñarol",
 					AwayTeam:   "Atlético",
 				},
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 05, 28, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(2024, 5, 28, 19, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Caracas",
 				},
@@ -77,6 +77,41 @@ func TestExtractEvents(t *testing.T) {
 			input:   "404.html",
 			want:    nil,
 			wantErr: galendario.ErrUnexpectedInput,
+		},
+		{
+			name:  "it should extract all events with date and time or date only",
+			input: "agenda_dates_without_time.html",
+			want: []galendario.Event{
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Arena MRV",
+					DateTime:   time.Date(2024, 5, 11, 21, 0, 0, 0, loc),
+					HomeTeam:   "Atlético",
+					AwayTeam:   "Grêmio",
+				},
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Arena MRV",
+					DateTime:   time.Date(2024, 5, 19, 16, 0, 0, 0, loc),
+					HomeTeam:   "Atlético",
+					AwayTeam:   "Bahia",
+				},
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Arena MRV",
+					DateTime:   time.Date(2024, 9, 29, 0, 0, 0, 0, loc),
+					HomeTeam:   "Atlético",
+					AwayTeam:   "Vitória",
+				},
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Castelão",
+					DateTime:   time.Date(2024, 10, 5, 0, 0, 0, 0, loc),
+					HomeTeam:   "Fortaleza",
+					AwayTeam:   "Atlético",
+				},
+			},
+			wantErr: nil,
 		},
 	}
 
