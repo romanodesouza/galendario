@@ -33,7 +33,10 @@ func ExtractEvents(r io.Reader, loc *time.Location) ([]Event, error) {
 		return nil, fmt.Errorf("ExtractEvents(): invalid html page: %w", ErrUnexpectedInput)
 	}
 
-	nodes, err := htmlquery.QueryAll(doc, `//section[@class="agenda-partidas"]//div[contains(concat(" ",normalize-space(@class)," ")," partida ") and not(contains(@class, "partida-finalizada"))]`)
+	nodes, err := htmlquery.QueryAll(doc, `
+	//section[@class="agenda-partidas"]
+	//div[contains(concat(" ",normalize-space(@class)," ")," partida ") and not(contains(@class, "partida-finalizada"))]
+	`)
 	if err != nil {
 		return nil, fmt.Errorf("ExtractEvents(): could not query main section node: %w", err)
 	}

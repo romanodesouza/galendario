@@ -25,7 +25,14 @@ func AddEventsToIcal(cal *ics.Calendar, events []Event) {
 }
 
 func icalUID(event Event) string {
-	seed := fmt.Sprintf("%d-%d-%d:%s:%s:%s", event.DateTime.Year(), event.DateTime.Month(), event.DateTime.Day(), event.Tournament, event.HomeTeam, event.AwayTeam)
+	seed := fmt.Sprintf("%d-%d-%d:%s:%s:%s",
+		event.DateTime.Year(),
+		event.DateTime.Month(),
+		event.DateTime.Day(),
+		event.Tournament,
+		event.HomeTeam,
+		event.AwayTeam,
+	)
 	h := sha256.New()
 	h.Write([]byte(seed))
 	return fmt.Sprintf("%x", h.Sum(nil))

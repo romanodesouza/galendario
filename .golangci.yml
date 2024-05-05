@@ -1,0 +1,16 @@
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - lll
+    - gocritic
+  fast: false
+
+linters-settings:
+  lll:
+    line-length: 120
+    tab-width: 1

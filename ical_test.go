@@ -141,15 +141,24 @@ func TestAddEventsToIcal(t *testing.T) {
 					t.Errorf("unexpected event end time, want %v, got %v", wantEndAt, gotEndAt)
 				}
 
-				if diff := cmp.Diff(event.GetProperty(ics.ComponentPropertySummary).Value, tt.want[i].GetProperty(ics.ComponentPropertySummary).Value); diff != "" {
+				if diff := cmp.Diff(
+					event.GetProperty(ics.ComponentPropertySummary).Value,
+					tt.want[i].GetProperty(ics.ComponentPropertySummary).Value); diff != "" {
+
 					t.Errorf("event summary mismatch (-want +got):\n%s", diff)
 				}
 
-				if diff := cmp.Diff(event.GetProperty(ics.ComponentPropertyLocation).Value, tt.want[i].GetProperty(ics.ComponentPropertyLocation).Value); diff != "" {
+				if diff := cmp.Diff(
+					event.GetProperty(ics.ComponentPropertyLocation).Value,
+					tt.want[i].GetProperty(ics.ComponentPropertyLocation).Value); diff != "" {
+
 					t.Errorf("event location mismatch (-want +got):\n%s", diff)
 				}
 
-				if diff := cmp.Diff(event.GetProperty(ics.ComponentPropertyDescription).Value, tt.want[i].GetProperty(ics.ComponentPropertyDescription).Value); diff != "" {
+				if diff := cmp.Diff(
+					event.GetProperty(ics.ComponentPropertyDescription).Value,
+					tt.want[i].GetProperty(ics.ComponentPropertyDescription).Value); diff != "" {
+
 					t.Errorf("event description mismatch (-want +got):\n%s", diff)
 				}
 			}

@@ -25,13 +25,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer resp.Body.Close()
 
 	// Extract events
 	events, err := galendario.ExtractEvents(resp.Body, loc)
 	if err != nil {
 		log.Fatal(err)
 	}
+	resp.Body.Close()
 
 	// Build calendar
 	cal := ics.NewCalendar()
@@ -39,7 +39,9 @@ func main() {
 	galendario.AddEventsToIcal(cal, events)
 
 	// Print calendar
-	cal.SerializeTo(os.Stdout)
+	if err := cal.SerializeTo(os.Stdout); err != nil {
+		log.Fatal(err)
+	}
 }
 
 const baseURL = "https://www.atletico.com.br/futebol/agenda"
