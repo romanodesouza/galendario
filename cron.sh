@@ -6,7 +6,7 @@ set -e
 go install ./cmd/galendario
 
 # Fetch new calendar
-galendario -tournaments ${TOURNAMENTS} \
+galendario \
 	| sed 's,\r,,g' \
 	| while read r; do echo -n "$r\r\n"; done > galendario_inline_new.ics
 
