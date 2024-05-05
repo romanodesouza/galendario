@@ -2,4 +2,4 @@
 
 ### Hoje não posso, tem jogo do Galo!
 
-Adicione o calendário e acompanhe os próximos jogos do Galão: https://tinyurl.com/galendario
+Subscreva e acompanhe os próximos jogos do Galão: https://tinyurl.com/galendario
