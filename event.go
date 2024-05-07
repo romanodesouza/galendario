@@ -108,7 +108,7 @@ func normalizeTournament(input string) string {
 	switch {
 	case strings.Contains(tournament, "libertadores"):
 		return "Copa Libertadores"
-	case strings.Contains(tournament, "brasileiro"):
+	case strings.Contains(tournament, "brasileir"):
 		return "Campeonato Brasileiro"
 	case strings.Contains(tournament, "do brasil"):
 		return "Copa do Brasil"
