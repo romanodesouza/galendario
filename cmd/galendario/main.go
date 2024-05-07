@@ -9,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	ics "github.com/arran4/golang-ical"
 	"github.com/romanodesouza/galendario"
 )
 
@@ -34,9 +33,8 @@ func main() {
 	resp.Body.Close()
 
 	// Build calendar
-	cal := ics.NewCalendar()
-	cal.SetName("Galendário")
-	galendario.AddEventsToIcal(cal, events)
+	cal := galendario.NewCalendar("Galendário")
+	cal.AddEvents(events)
 
 	// Print calendar
 	if err := cal.SerializeTo(os.Stdout); err != nil {

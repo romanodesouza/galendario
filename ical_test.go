@@ -116,11 +116,9 @@ func TestAddEventsToIcal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			cal := ics.NewCalendar()
-			cal.SetName("Galendário")
-
-			galendario.AddEventsToIcal(cal, tt.events)
-			icalEvents := cal.Events()
+			cal := galendario.NewCalendar("Test")
+			cal.AddEvents(tt.events)
+			icalEvents := cal.ICalEvents()
 
 			if len(icalEvents) != len(tt.want) {
 				t.Fatalf("unexpected length of events, want %d, got %d", len(tt.want), len(icalEvents))
@@ -162,7 +160,6 @@ func TestAddEventsToIcal(t *testing.T) {
 					t.Errorf("event description mismatch (-want +got):\n%s", diff)
 				}
 			}
-
 		})
 	}
 }
