@@ -55,8 +55,8 @@ func fetchPage(loc *time.Location) (*http.Response, error) {
 		return nil, fmt.Errorf("could not build POST request object for %s: %w", baseURL, err)
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Add("Accept", "text/html")
-	req.Header.Add("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0")
+	req.Header.Set("Accept", "text/html")
+	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0")
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
