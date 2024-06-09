@@ -1,4 +1,4 @@
-package galendario
+package event
 
 import (
 	"errors"

@@ -1,4 +1,4 @@
-package galendario_test
+package event_test
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/romanodesouza/galendario"
+	"github.com/romanodesouza/galendario/internal/event"
 )
 
 func TestExtractEvents(t *testing.T) {
@@ -20,13 +20,13 @@ func TestExtractEvents(t *testing.T) {
 	tests := []struct {
 		name    string
 		input   string
-		want    []galendario.Event
+		want    []event.Event
 		wantErr error
 	}{
 		{
 			name:  "it should extract all events in asc order",
 			input: "agenda.html",
-			want: []galendario.Event{
+			want: []event.Event{
 				{
 					Tournament: "Copa do Brasil",
 					Stadium:    "Arena MRV",
@@ -47,7 +47,7 @@ func TestExtractEvents(t *testing.T) {
 		{
 			name:  "it should extract all events in asc order, except the finished ones",
 			input: "agenda_finished_unfinished.html",
-			want: []galendario.Event{
+			want: []event.Event{
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Gigante de Arroyito",
@@ -76,12 +76,12 @@ func TestExtractEvents(t *testing.T) {
 			name:    "it should return unexpected input error when input is not agenda",
 			input:   "404.html",
 			want:    nil,
-			wantErr: galendario.ErrUnexpectedInput,
+			wantErr: event.ErrUnexpectedInput,
 		},
 		{
 			name:  "it should extract all events with date and time or date only",
 			input: "agenda_dates_without_time.html",
-			want: []galendario.Event{
+			want: []event.Event{
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
@@ -122,7 +122,7 @@ func TestExtractEvents(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			events, err := galendario.ExtractEvents(f, loc)
+			events, err := event.ExtractEvents(f, loc)
 			_ = f.Close()
 
 			if !errors.Is(err, tt.wantErr) {

@@ -9,7 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/romanodesouza/galendario"
+	"github.com/romanodesouza/galendario/internal/event"
+	"github.com/romanodesouza/galendario/internal/ical"
 )
 
 func main() {
@@ -26,14 +27,14 @@ func main() {
 	}
 
 	// Extract events
-	events, err := galendario.ExtractEvents(resp.Body, loc)
+	events, err := event.ExtractEvents(resp.Body, loc)
 	if err != nil {
 		log.Fatal(err)
 	}
 	resp.Body.Close()
 
 	// Build calendar
-	cal := galendario.NewCalendar("Galendário")
+	cal := ical.NewCalendar("Galendário")
 	cal.AddEvents(events)
 
 	// Print calendar

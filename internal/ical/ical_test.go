@@ -1,4 +1,4 @@
-package galendario_test
+package ical_test
 
 import (
 	"testing"
@@ -6,7 +6,8 @@ import (
 
 	ics "github.com/arran4/golang-ical"
 	"github.com/google/go-cmp/cmp"
-	"github.com/romanodesouza/galendario"
+	"github.com/romanodesouza/galendario/internal/event"
+	"github.com/romanodesouza/galendario/internal/ical"
 )
 
 func TestAddEventsToIcal(t *testing.T) {
@@ -17,12 +18,12 @@ func TestAddEventsToIcal(t *testing.T) {
 
 	tests := []struct {
 		name   string
-		events []galendario.Event
+		events []event.Event
 		want   []*ics.VEvent
 	}{
 		{
 			name: "it should serialize a single event",
-			events: []galendario.Event{
+			events: []event.Event{
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Gigante de Arroyito",
@@ -43,7 +44,7 @@ func TestAddEventsToIcal(t *testing.T) {
 		},
 		{
 			name: "it should serialize multiple events",
-			events: []galendario.Event{
+			events: []event.Event{
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Campeón del Siglo",
@@ -79,7 +80,7 @@ func TestAddEventsToIcal(t *testing.T) {
 		},
 		{
 			name: "it should serialize events without time as whole-day events",
-			events: []galendario.Event{
+			events: []event.Event{
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Castelão",
@@ -116,7 +117,7 @@ func TestAddEventsToIcal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			cal := galendario.NewCalendar("Test")
+			cal := ical.NewCalendar("Test")
 			cal.AddEvents(tt.events)
 			icalEvents := cal.ICalEvents()
 

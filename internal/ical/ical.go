@@ -1,4 +1,4 @@
-package galendario
+package ical
 
 import (
 	"crypto/sha256"
@@ -7,6 +7,7 @@ import (
 	"time"
 
 	ics "github.com/arran4/golang-ical"
+	"github.com/romanodesouza/galendario/internal/event"
 )
 
 type Calendar struct {
@@ -22,7 +23,7 @@ func NewCalendar(name string) *Calendar {
 	}
 }
 
-func (c *Calendar) AddEvents(events []Event) {
+func (c *Calendar) AddEvents(events []event.Event) {
 	for _, event := range events {
 		ev := c.cal.AddEvent(icalUID(event))
 		// Event has time confirmed
@@ -46,14 +47,14 @@ func (c *Calendar) SerializeTo(w io.Writer) error {
 	return c.cal.SerializeTo(w)
 }
 
-func icalUID(event Event) string {
+func icalUID(ev event.Event) string {
 	seed := fmt.Sprintf("%d-%d-%d:%s:%s:%s",
-		event.DateTime.Year(),
-		event.DateTime.Month(),
-		event.DateTime.Day(),
-		event.Tournament,
-		event.HomeTeam,
-		event.AwayTeam,
+		ev.DateTime.Year(),
+		ev.DateTime.Month(),
+		ev.DateTime.Day(),
+		ev.Tournament,
+		ev.HomeTeam,
+		ev.AwayTeam,
 	)
 	h := sha256.New()
 	h.Write([]byte(seed))
