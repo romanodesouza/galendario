@@ -113,6 +113,48 @@ func TestExtractEvents(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name:  "it should extract all events with date and time or date only, handling multiple time formats",
+			input: "agenda_dates_without_time_multiple_formats.html",
+			want: []event.Event{
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Arena MRV",
+					DateTime:   time.Date(2024, 5, 11, 21, 0, 0, 0, loc),
+					HomeTeam:   "Atlético",
+					AwayTeam:   "Grêmio",
+				},
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Arena MRV",
+					DateTime:   time.Date(2024, 5, 19, 16, 0, 0, 0, loc),
+					HomeTeam:   "Atlético",
+					AwayTeam:   "Bahia",
+				},
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Arena MRV",
+					DateTime:   time.Date(2024, 9, 29, 0, 0, 0, 0, loc),
+					HomeTeam:   "Atlético",
+					AwayTeam:   "Vitória",
+				},
+				{
+					Tournament: "Campeonato Brasileiro",
+					Stadium:    "Castelão",
+					DateTime:   time.Date(2024, 10, 5, 0, 0, 0, 0, loc),
+					HomeTeam:   "Fortaleza",
+					AwayTeam:   "Atlético",
+				},
+				{
+					Tournament: "Copa Libertadores",
+					Stadium:    "Nuevo Gasómetro",
+					DateTime:   time.Date(2024, 8, 13, 21, 30, 0, 0, loc),
+					HomeTeam:   "San Lorenzo",
+					AwayTeam:   "Atlético",
+				},
+			},
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {

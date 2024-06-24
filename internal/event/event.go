@@ -11,9 +11,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-var (
-	ErrUnexpectedInput = errors.New("unexpected html input")
-)
+var ErrUnexpectedInput = errors.New("unexpected html input")
 
 type Event struct {
 	Tournament string
@@ -52,8 +50,15 @@ func ExtractEvents(r io.Reader, loc *time.Location) ([]Event, error) {
 		case div == nil:
 			return nil, fmt.Errorf("ExtractEvents(): missing expected 'div.partida-data' node: %w", ErrUnexpectedInput)
 		}
-		event.Stadium = normalizeStadium(htmlquery.InnerText(div.LastChild))
-		event.DateTime = parseDateTime(htmlquery.InnerText(div.FirstChild.NextSibling), loc)
+
+		stadium := htmlquery.InnerText(div.LastChild)
+		event.Stadium = normalizeStadium(stadium)
+
+		dateTime := htmlquery.InnerText(div.FirstChild.NextSibling)
+		event.DateTime = parseDateTime(dateTime, loc)
+		if event.DateTime.IsZero() {
+			return nil, fmt.Errorf(`ExtractEvents(): unexpected date/time format: "%s": %w`, dateTime, ErrUnexpectedInput)
+		}
 
 		div, err = htmlquery.Query(node, `//div[@class="partida-campeonato"]`)
 		switch {
@@ -90,8 +95,12 @@ func isCalendarPage(doc *html.Node) bool {
 
 func parseDateTime(input string, loc *time.Location) time.Time {
 	now := time.Now().In(loc)
-	// Date and time
+	// Date and time (21:00 format)
 	t, err := time.ParseInLocation("02/01 às 15:04-2006", fmt.Sprintf("%s-%d", input, now.Year()), loc)
+	// Date and time (21h format)
+	if err != nil {
+		t, err = time.ParseInLocation("02/01 às 15h04-2006", fmt.Sprintf("%s-%d", input, now.Year()), loc)
+	}
 	// Date only
 	if err != nil {
 		t, _ = time.ParseInLocation("02/01-2006", fmt.Sprintf("%s-%d", input, now.Year()), loc)
