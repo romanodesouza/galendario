@@ -94,6 +94,7 @@ func isCalendarPage(doc *html.Node) bool {
 }
 
 func parseDateTime(input string, loc *time.Location) time.Time {
+	input = strings.ToLower(input)
 	now := time.Now().In(loc)
 	// Date and time (21:00 format)
 	t, err := time.ParseInLocation("02/01 às 15:04-2006", fmt.Sprintf("%s-%d", input, now.Year()), loc)
@@ -103,7 +104,11 @@ func parseDateTime(input string, loc *time.Location) time.Time {
 	}
 	// Date only
 	if err != nil {
-		t, _ = time.ParseInLocation("02/01-2006", fmt.Sprintf("%s-%d", input, now.Year()), loc)
+		t, err = time.ParseInLocation("02/01-2006", fmt.Sprintf("%s-%d", input, now.Year()), loc)
+	}
+	// Date only ("a definir" format)
+	if err != nil {
+		t, _ = time.ParseInLocation("02/01 às a definir-2006", fmt.Sprintf("%s-%d", input, now.Year()), loc)
 	}
 	return t
 }
