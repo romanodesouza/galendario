@@ -126,6 +126,8 @@ func normalizeTournament(input string) string {
 		return "Campeonato Brasileiro"
 	case strings.Contains(tournament, "do brasil"):
 		return "Copa do Brasil"
+	case strings.Contains(tournament, "mineiro"):
+		return "Campeonato Mineiro"
 	}
 	return tournament
 }
