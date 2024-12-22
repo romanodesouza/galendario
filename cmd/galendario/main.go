@@ -47,8 +47,10 @@ const baseURL = "https://www.atletico.com.br/futebol/agenda"
 
 func fetchPage(loc *time.Location) (*http.Response, error) {
 	now := time.Now().In(loc)
+	lastDayOfYear := time.Date(now.Year(), 12, 31, 0, 0, 0, 0, loc)
 	body := url.Values{
 		"data-inicio": []string{now.Format("02/01/2006")},
+		"data-final":  []string{lastDayOfYear.Format("02/01/2006")},
 	}
 	req, err := http.NewRequest("POST", baseURL, strings.NewReader(body.Encode()))
 	if err != nil {

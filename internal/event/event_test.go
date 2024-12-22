@@ -17,6 +17,9 @@ func TestExtractEvents(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	now := time.Now().In(loc)
+	year := now.Year()
+
 	tests := []struct {
 		name    string
 		input   string
@@ -28,16 +31,23 @@ func TestExtractEvents(t *testing.T) {
 			input: "agenda.html",
 			want: []event.Event{
 				{
+					Tournament: "Campeonato Mineiro",
+					Stadium:    "Mário Helênio",
+					DateTime:   time.Date(year, 1, 19, 16, 0, 0, 0, loc),
+					HomeTeam:   "Aymorés",
+					AwayTeam:   "Atlético",
+				},
+				{
 					Tournament: "Copa do Brasil",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 4, 30, 21, 30, 0, 0, loc),
+					DateTime:   time.Date(year, 4, 30, 21, 30, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Sport",
 				},
 				{
 					Tournament: "Copa do Brasil",
 					Stadium:    "Arena Pernambuco",
-					DateTime:   time.Date(2024, 5, 22, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 22, 19, 0, 0, 0, loc),
 					HomeTeam:   "Sport",
 					AwayTeam:   "Atlético",
 				},
@@ -51,21 +61,21 @@ func TestExtractEvents(t *testing.T) {
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Gigante de Arroyito",
-					DateTime:   time.Date(2024, 5, 7, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 7, 19, 0, 0, 0, loc),
 					HomeTeam:   "Rosario Central",
 					AwayTeam:   "Atlético",
 				},
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Campeón del Siglo",
-					DateTime:   time.Date(2024, 5, 14, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 14, 19, 0, 0, 0, loc),
 					HomeTeam:   "Peñarol",
 					AwayTeam:   "Atlético",
 				},
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 5, 28, 19, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 28, 19, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Caracas",
 				},
@@ -85,28 +95,28 @@ func TestExtractEvents(t *testing.T) {
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 5, 11, 21, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 11, 21, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Grêmio",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 5, 19, 16, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 19, 16, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Bahia",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 9, 29, 0, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 9, 29, 0, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Vitória",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Castelão",
-					DateTime:   time.Date(2024, 10, 5, 0, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 10, 5, 0, 0, 0, 0, loc),
 					HomeTeam:   "Fortaleza",
 					AwayTeam:   "Atlético",
 				},
@@ -120,35 +130,35 @@ func TestExtractEvents(t *testing.T) {
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 5, 11, 21, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 11, 21, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Grêmio",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 5, 19, 16, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 19, 16, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Bahia",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 9, 29, 0, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 9, 29, 0, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Vitória",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Castelão",
-					DateTime:   time.Date(2024, 10, 5, 0, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 10, 5, 0, 0, 0, 0, loc),
 					HomeTeam:   "Fortaleza",
 					AwayTeam:   "Atlético",
 				},
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Nuevo Gasómetro",
-					DateTime:   time.Date(2024, 8, 13, 21, 30, 0, 0, loc),
+					DateTime:   time.Date(year, 8, 13, 21, 30, 0, 0, loc),
 					HomeTeam:   "San Lorenzo",
 					AwayTeam:   "Atlético",
 				},
@@ -162,35 +172,35 @@ func TestExtractEvents(t *testing.T) {
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 5, 11, 21, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 11, 21, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Grêmio",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 5, 19, 16, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 5, 19, 16, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Bahia",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Arena MRV",
-					DateTime:   time.Date(2024, 9, 29, 0, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 9, 29, 0, 0, 0, 0, loc),
 					HomeTeam:   "Atlético",
 					AwayTeam:   "Vitória",
 				},
 				{
 					Tournament: "Campeonato Brasileiro",
 					Stadium:    "Castelão",
-					DateTime:   time.Date(2024, 10, 5, 0, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 10, 5, 0, 0, 0, 0, loc),
 					HomeTeam:   "Fortaleza",
 					AwayTeam:   "Atlético",
 				},
 				{
 					Tournament: "Copa Libertadores",
 					Stadium:    "Nuevo Gasómetro",
-					DateTime:   time.Date(2024, 8, 13, 0, 0, 0, 0, loc),
+					DateTime:   time.Date(year, 8, 13, 0, 0, 0, 0, loc),
 					HomeTeam:   "San Lorenzo",
 					AwayTeam:   "Atlético",
 				},
