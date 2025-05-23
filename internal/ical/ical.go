@@ -33,7 +33,7 @@ func (c *Calendar) AddEvents(events []event.Event) {
 		} else { // Event has no time confirmed - flag it as whole-day event
 			ev.SetAllDayStartAt(event.DateTime)
 		}
-		ev.SetSummary(fmt.Sprintf("%s vs %s", event.HomeTeam, event.AwayTeam))
+		ev.SetSummary(fmt.Sprintf("%s x %s", event.HomeTeam, event.AwayTeam))
 		ev.SetLocation(event.Stadium)
 		ev.SetDescription(event.Tournament)
 	}
