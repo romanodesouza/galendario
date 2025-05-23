@@ -118,18 +118,21 @@ func normalizeStadium(input string) string {
 }
 
 func normalizeTournament(input string) string {
-	tournament := strings.ToLower(strings.TrimSpace(input))
+	input = strings.TrimSpace(input)
+	tournament := strings.ToLower(input)
 	switch {
 	case strings.Contains(tournament, "libertadores"):
-		return "Copa Libertadores"
+		return "Libertadores"
 	case strings.Contains(tournament, "brasileir"):
-		return "Campeonato Brasileiro"
+		return "Brasileirão"
 	case strings.Contains(tournament, "do brasil"):
 		return "Copa do Brasil"
 	case strings.Contains(tournament, "mineiro"):
 		return "Campeonato Mineiro"
+	case strings.Contains(tournament, "americana"):
+		return "Sul-Americana"
 	}
-	return tournament
+	return input
 }
 
 func normalizeTeam(input string) string {
