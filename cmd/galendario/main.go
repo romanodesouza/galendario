@@ -20,8 +20,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Fetch page
-	resp, err := fetchPage(loc)
+	// Fetch events
+	startDate := time.Now().In(loc)
+	endDate := endOfMonth(startDate.AddDate(0, 3, 0))
+	resp, err := fetchPage(startDate, endDate)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,12 +47,10 @@ func main() {
 
 const baseURL = "https://www.atletico.com.br/futebol/agenda"
 
-func fetchPage(loc *time.Location) (*http.Response, error) {
-	now := time.Now().In(loc)
-	lastDayOfYear := time.Date(now.Year(), 12, 31, 0, 0, 0, 0, loc)
+func fetchPage(startDate, endDate time.Time) (*http.Response, error) {
 	body := url.Values{
-		"data-inicio": []string{now.Format("02/01/2006")},
-		"data-final":  []string{lastDayOfYear.Format("02/01/2006")},
+		"data-inicio": []string{startDate.Format("02/01/2006")},
+		"data-final":  []string{endDate.Format("02/01/2006")},
 	}
 	req, err := http.NewRequest("POST", baseURL, strings.NewReader(body.Encode()))
 	if err != nil {
@@ -70,4 +70,13 @@ func fetchPage(loc *time.Location) (*http.Response, error) {
 	}
 
 	return resp, nil
+}
+
+func startOfMonth(date time.Time) time.Time {
+	return time.Date(date.Year(), date.Month(), 1, 0, 0, 0, 0, date.Location())
+}
+
+func endOfMonth(date time.Time) time.Time {
+	firstDayOfNextMonth := startOfMonth(date).AddDate(0, 1, 0)
+	return firstDayOfNextMonth.Add(-time.Second)
 }
