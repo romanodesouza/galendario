@@ -261,8 +261,8 @@ func Test_EventAdjustYear(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			event := tt.input
-			event.AdjustYear(tt.utcMock)
-			if got := event.DateTime.Year(); got != tt.want {
+			dateTime := event.AdjustedDateTime(tt.utcMock)
+			if got := dateTime.Year(); got != tt.want {
 				t.Fatalf("err: expected %v, got %v", tt.want, got)
 			}
 		})

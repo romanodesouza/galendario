@@ -29,13 +29,15 @@ type Event struct {
 	AwayTeam   string
 }
 
-func (e *Event) AdjustYear(utcNow time.Time) {
+func (e Event) AdjustedDateTime(utcNow time.Time) time.Time {
 	now := utcNow.In(e.DateTime.Location())
 
 	if e.DateTime.Month() < now.Month() {
-		e.DateTime = time.Date(e.DateTime.Year()+1, e.DateTime.Month(), e.DateTime.Day(),
+		return time.Date(e.DateTime.Year()+1, e.DateTime.Month(), e.DateTime.Day(),
 			e.DateTime.Hour(), e.DateTime.Minute(), e.DateTime.Second(), e.DateTime.Nanosecond(), e.DateTime.Location())
 	}
+
+	return e.DateTime
 }
 
 func FetchAll(startDate, endDate time.Time) ([]Event, error) {
@@ -68,7 +70,7 @@ func FetchAll(startDate, endDate time.Time) ([]Event, error) {
 
 	utcNow := time.Now().UTC()
 	for _, event := range events {
-		event.AdjustYear(utcNow)
+		event.DateTime = event.AdjustedDateTime(utcNow)
 	}
 
 	return events, nil
