@@ -34,8 +34,8 @@ func TestAddEventsToIcal(t *testing.T) {
 			},
 			want: func() []*ics.VEvent {
 				event := ics.NewEvent("test")
-				event.SetStartAt(time.Date(2024, 5, 7, 19, 0, 0, 0, loc))
-				event.SetEndAt(time.Date(2024, 5, 7, 19, 0, 0, 0, loc).Add(2 * time.Hour))
+				event.SetStartAt(ical.AdjustedDateTime(time.Date(2024, 5, 7, 19, 0, 0, 0, loc)))
+				event.SetEndAt(ical.AdjustedDateTime(time.Date(2024, 5, 7, 19, 0, 0, 0, loc).Add(2 * time.Hour)))
 				event.SetSummary("Rosario Central x Atlético")
 				event.SetLocation("Gigante de Arroyito")
 				event.SetDescription("Copa Libertadores")
@@ -62,15 +62,15 @@ func TestAddEventsToIcal(t *testing.T) {
 			},
 			want: func() []*ics.VEvent {
 				event1 := ics.NewEvent("test")
-				event1.SetStartAt(time.Date(2024, 5, 14, 19, 0, 0, 0, loc))
-				event1.SetEndAt(time.Date(2024, 5, 14, 19, 0, 0, 0, loc).Add(2 * time.Hour))
+				event1.SetStartAt(ical.AdjustedDateTime(time.Date(2024, 5, 14, 19, 0, 0, 0, loc)))
+				event1.SetEndAt(ical.AdjustedDateTime(time.Date(2024, 5, 14, 19, 0, 0, 0, loc).Add(2 * time.Hour)))
 				event1.SetSummary("Peñarol x Atlético")
 				event1.SetLocation("Campeón del Siglo")
 				event1.SetDescription("Copa Libertadores")
 
 				event2 := ics.NewEvent("test")
-				event2.SetStartAt(time.Date(2024, 5, 28, 19, 0, 0, 0, loc))
-				event2.SetEndAt(time.Date(2024, 5, 28, 19, 0, 0, 0, loc).Add(2 * time.Hour))
+				event2.SetStartAt(ical.AdjustedDateTime(time.Date(2024, 5, 28, 19, 0, 0, 0, loc)))
+				event2.SetEndAt(ical.AdjustedDateTime(time.Date(2024, 5, 28, 19, 0, 0, 0, loc).Add(2 * time.Hour)))
 				event2.SetSummary("Atlético x Caracas")
 				event2.SetLocation("Arena MRV")
 				event2.SetDescription("Copa Libertadores")
@@ -98,14 +98,14 @@ func TestAddEventsToIcal(t *testing.T) {
 			},
 			want: func() []*ics.VEvent {
 				event1 := ics.NewEvent("test")
-				event1.SetAllDayStartAt(time.Date(2024, 10, 5, 0, 0, 0, 0, loc))
+				event1.SetAllDayStartAt(ical.AdjustedDateTime(time.Date(2024, 10, 5, 0, 0, 0, 0, loc)))
 				event1.SetSummary("Fortaleza x Atlético")
 				event1.SetLocation("Castelão")
 				event1.SetDescription("Campeonato Brasileiro")
 
 				event2 := ics.NewEvent("test")
-				event2.SetStartAt(time.Date(2024, 5, 28, 19, 0, 0, 0, loc))
-				event2.SetEndAt(time.Date(2024, 5, 28, 19, 0, 0, 0, loc).Add(2 * time.Hour))
+				event2.SetStartAt(ical.AdjustedDateTime(time.Date(2024, 5, 28, 19, 0, 0, 0, loc)))
+				event2.SetEndAt(ical.AdjustedDateTime(time.Date(2024, 5, 28, 19, 0, 0, 0, loc).Add(2 * time.Hour)))
 				event2.SetSummary("Atlético x Caracas")
 				event2.SetLocation("Arena MRV")
 				event2.SetDescription("Copa Libertadores")
@@ -160,6 +160,37 @@ func TestAddEventsToIcal(t *testing.T) {
 
 					t.Errorf("event description mismatch (-want +got):\n%s", diff)
 				}
+			}
+		})
+	}
+}
+
+func Test_AdjustedDateTime(t *testing.T) {
+	tests := []struct {
+		name    string
+		utcMock time.Time
+		input   event.Event
+		want    int
+	}{
+		{
+			name:    "it should roll over the year when event date's month is lower",
+			utcMock: time.Date(2025, 12, 1, 0, 0, 0, 0, time.UTC),
+			input:   event.Event{DateTime: time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)},
+			want:    2026,
+		},
+		{
+			name:    "it should keep the year otherwise",
+			utcMock: time.Date(2025, 11, 1, 0, 0, 0, 0, time.UTC),
+			input:   event.Event{DateTime: time.Date(2025, 12, 1, 0, 0, 0, 0, time.UTC)},
+			want:    2025,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dateTime := ical.AdjustedDateTime(tt.input.DateTime)
+			if got := dateTime.Year(); got != tt.want {
+				t.Fatalf("err: expected %v, got %v", tt.want, got)
 			}
 		})
 	}

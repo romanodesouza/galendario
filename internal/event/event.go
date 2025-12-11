@@ -29,17 +29,6 @@ type Event struct {
 	AwayTeam   string
 }
 
-func (e Event) AdjustedDateTime(utcNow time.Time) time.Time {
-	now := utcNow.In(e.DateTime.Location())
-
-	if e.DateTime.Month() < now.Month() {
-		return time.Date(e.DateTime.Year()+1, e.DateTime.Month(), e.DateTime.Day(),
-			e.DateTime.Hour(), e.DateTime.Minute(), e.DateTime.Second(), e.DateTime.Nanosecond(), e.DateTime.Location())
-	}
-
-	return e.DateTime
-}
-
 func FetchAll(startDate, endDate time.Time) ([]Event, error) {
 	body := url.Values{
 		"data-inicio": []string{startDate.Format("02/01/2006")},
@@ -66,11 +55,6 @@ func FetchAll(startDate, endDate time.Time) ([]Event, error) {
 	events, err := ExtractEvents(resp.Body, startDate.Location())
 	if err != nil {
 		return nil, err
-	}
-
-	utcNow := time.Now().UTC()
-	for _, event := range events {
-		event.DateTime = event.AdjustedDateTime(utcNow)
 	}
 
 	return events, nil

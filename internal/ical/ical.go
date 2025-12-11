@@ -25,6 +25,7 @@ func NewCalendar(name string) *Calendar {
 
 func (c *Calendar) AddEvents(events []event.Event) {
 	for _, event := range events {
+		event.DateTime = AdjustedDateTime(event.DateTime)
 		ev := c.cal.AddEvent(icalUID(event))
 		// Event has time confirmed
 		if event.DateTime.Hour() != 0 {
@@ -60,4 +61,16 @@ func icalUID(ev event.Event) string {
 	h := sha256.New()
 	h.Write([]byte(seed))
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func AdjustedDateTime(dateTime time.Time) time.Time {
+	now := time.Now().UTC().In(dateTime.Location())
+
+	// year rollover
+	if dateTime.Month() < now.Month() {
+		return time.Date(dateTime.Year()+1, dateTime.Month(), dateTime.Day(),
+			dateTime.Hour(), dateTime.Minute(), dateTime.Second(), dateTime.Nanosecond(), dateTime.Location())
+	}
+
+	return dateTime
 }
