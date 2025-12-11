@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -11,7 +13,13 @@ import (
 	"golang.org/x/net/html"
 )
 
-var ErrUnexpectedInput = errors.New("unexpected html input")
+const (
+	baseURL = "https://www.atletico.com.br/futebol/agenda"
+)
+
+var (
+	ErrUnexpectedInput = errors.New("unexpected html input")
+)
 
 type Event struct {
 	Tournament string
@@ -19,6 +27,46 @@ type Event struct {
 	DateTime   time.Time
 	HomeTeam   string
 	AwayTeam   string
+}
+
+func (e *Event) AdjustYear(utc time.Time) {
+	now := utc.In(e.DateTime.Location())
+
+	if now.Month() < e.DateTime.Month() {
+		e.DateTime = time.Date(e.DateTime.Year()+1, e.DateTime.Month(), e.DateTime.Day(),
+			e.DateTime.Hour(), e.DateTime.Minute(), e.DateTime.Second(), e.DateTime.Nanosecond(), e.DateTime.Location())
+	}
+}
+
+func FetchAll(startDate, endDate time.Time) ([]Event, error) {
+	body := url.Values{
+		"data-inicio": []string{startDate.Format("02/01/2006")},
+		"data-final":  []string{endDate.Format("02/01/2006")},
+	}
+	req, err := http.NewRequest("POST", baseURL, strings.NewReader(body.Encode()))
+	if err != nil {
+		return nil, fmt.Errorf("could not build POST request object for %s: %w", baseURL, err)
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Accept", "text/html")
+	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("could not make POST request to %s: %w", baseURL, err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("unexpected status code from %s: %d", baseURL, resp.StatusCode)
+	}
+
+	events, err := ExtractEvents(resp.Body, startDate.Location())
+	if err != nil {
+		return nil, err
+	}
+
+	return events, nil
 }
 
 func ExtractEvents(r io.Reader, loc *time.Location) ([]Event, error) {
