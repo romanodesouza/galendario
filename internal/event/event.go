@@ -29,10 +29,10 @@ type Event struct {
 	AwayTeam   string
 }
 
-func (e *Event) AdjustYear(utc time.Time) {
-	now := utc.In(e.DateTime.Location())
+func (e *Event) AdjustYear(utcNow time.Time) {
+	now := utcNow.In(e.DateTime.Location())
 
-	if now.Month() < e.DateTime.Month() {
+	if e.DateTime.Month() < now.Month() {
 		e.DateTime = time.Date(e.DateTime.Year()+1, e.DateTime.Month(), e.DateTime.Day(),
 			e.DateTime.Hour(), e.DateTime.Minute(), e.DateTime.Second(), e.DateTime.Nanosecond(), e.DateTime.Location())
 	}

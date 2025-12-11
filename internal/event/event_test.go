@@ -240,29 +240,27 @@ func TestExtractEvents(t *testing.T) {
 func Test_EventAdjustYear(t *testing.T) {
 	tests := []struct {
 		name    string
-		input   time.Time
 		utcMock time.Time
+		input   event.Event
 		want    int
 	}{
 		{
-			name:    "it should keep the year when current month is higher",
-			input:   time.Date(2025, 9, 1, 0, 0, 0, 0, time.UTC),
-			utcMock: time.Date(2025, 11, 1, 0, 0, 0, 0, time.UTC),
-			want:    2025,
+			name:    "it should roll over the year when event date's month is lower",
+			utcMock: time.Date(2025, 12, 1, 0, 0, 0, 0, time.UTC),
+			input:   event.Event{DateTime: time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)},
+			want:    2026,
 		},
 		{
-			name:    "it should increment the year when current month is lower",
-			input:   time.Date(2025, 9, 1, 0, 0, 0, 0, time.UTC),
-			utcMock: time.Date(2025, 5, 1, 0, 0, 0, 0, time.UTC),
-			want:    2026,
+			name:    "it should keep the year otherwise",
+			utcMock: time.Date(2025, 11, 1, 0, 0, 0, 0, time.UTC),
+			input:   event.Event{DateTime: time.Date(2025, 12, 1, 0, 0, 0, 0, time.UTC)},
+			want:    2025,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			event := event.Event{
-				DateTime: tt.input,
-			}
+			event := tt.input
 			event.AdjustYear(tt.utcMock)
 			if got := event.DateTime.Year(); got != tt.want {
 				t.Fatalf("err: expected %v, got %v", tt.want, got)
