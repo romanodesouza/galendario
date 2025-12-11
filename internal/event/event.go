@@ -66,6 +66,11 @@ func FetchAll(startDate, endDate time.Time) ([]Event, error) {
 		return nil, err
 	}
 
+	utcNow := time.Now().UTC()
+	for _, event := range events {
+		event.AdjustYear(utcNow)
+	}
+
 	return events, nil
 }
 

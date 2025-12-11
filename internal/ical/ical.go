@@ -24,9 +24,7 @@ func NewCalendar(name string) *Calendar {
 }
 
 func (c *Calendar) AddEvents(events []event.Event) {
-	utcNow := time.Now().UTC()
 	for _, event := range events {
-		event.AdjustYear(utcNow)
 		ev := c.cal.AddEvent(icalUID(event))
 		// Event has time confirmed
 		if event.DateTime.Hour() != 0 {
@@ -38,7 +36,7 @@ func (c *Calendar) AddEvents(events []event.Event) {
 		ev.SetSummary(fmt.Sprintf("%s x %s", event.HomeTeam, event.AwayTeam))
 		ev.SetLocation(event.Stadium)
 		ev.SetDescription(event.Tournament)
-		ev.SetDtStampTime(utcNow)
+		ev.SetDtStampTime(time.Now().UTC())
 	}
 }
 
