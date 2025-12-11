@@ -36,7 +36,6 @@ func (c *Calendar) AddEvents(events []event.Event) {
 		ev.SetSummary(fmt.Sprintf("%s x %s", event.HomeTeam, event.AwayTeam))
 		ev.SetLocation(event.Stadium)
 		ev.SetDescription(event.Tournament)
-		ev.SetDtStampTime(time.Now().UTC())
 	}
 }
 
