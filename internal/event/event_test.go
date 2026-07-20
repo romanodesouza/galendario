@@ -218,7 +218,7 @@ func TestExtractEvents(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			f, err := os.Open(fmt.Sprintf(".testdata/%s", tt.input))
+			f, err := os.Open(fmt.Sprintf("testdata/%s", tt.input))
 			if err != nil {
 				t.Fatal(err)
 			}
