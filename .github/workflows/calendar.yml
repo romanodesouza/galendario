@@ -1,25 +1,30 @@
 name: Calendar
 
 on:
+  schedule:
+    - cron: '0 4,10,16,22 * * *'
   workflow_run:
     workflows: ["Go"]
     types:
       - completed
 
 jobs:
-  check_calendar:
+  update_calendar:
+    if: >
+      github.event_name == 'schedule' ||
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Set up Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v6
       with:
-        go-version: '1.21.3'
+        go-version: '1.26.x'
       
     - name: Check calendar updates
       env:
         GH_BEARER: ${{ secrets.GH_BEARER }}
         GH_GIST: ${{ secrets.GH_GIST }}
-      run: ./cron.sh
+      run: ./scripts/update_calendar.sh
       if: github.event_name != 'pull_request'

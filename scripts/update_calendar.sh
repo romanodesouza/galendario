@@ -4,7 +4,7 @@ set -e
 set -o pipefail
 
 # Install
-go install ./cmd/galendario
+go install $(dirname "$0")/../cmd/galendario
 
 # Fetch new calendar
 galendario \
